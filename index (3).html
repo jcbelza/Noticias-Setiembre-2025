@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puesta a punto sobre noticias del mes sobre el sector eléctrico regional - Septiembre 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 40vh;
+            max-height: 450px;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #2563eb;
+        }
+        .nav-link.active {
+            color: #2563eb;
+            border-bottom: 2px solid #2563eb;
+        }
+        .tab-button {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-button.active {
+            background-color: #1e40af;
+            color: white;
+        }
+    </style>
+</head>
+<body class="text-gray-800 smooth-scroll">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800">Sector Eléctrico Regional</h1>
+                <p class="text-xs text-gray-500">Autor: Coordinación Internacional del Área Corporativa | Fuente: Flash CIER</p>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#overview" class="nav-link text-gray-600 font-medium pb-1">Panorama</a>
+                <a href="#country-analysis" class="nav-link text-gray-600 font-medium pb-1">Análisis País</a>
+                <a href="#tech-trends" class="nav-link text-gray-600 font-medium pb-1">Tecnologías</a>
+                <a href="#insights" class="nav-link text-gray-600 font-medium pb-1">Alertas</a>
+            </div>
+             <div class="md:hidden">
+                <select id="mobile-nav" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option value="#overview">Panorama</option>
+                    <option value="#country-analysis">Análisis País</option>
+                    <option value="#tech-trends">Tecnologías</option>
+                    <option value="#insights">Alertas</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="overview" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-2">Panorama del Sector Eléctrico - Septiembre 2025</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Análisis de las tendencias, inversiones y desafíos que definen el futuro energético de Latinoamérica y el Caribe.</p>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-800">Sudamérica</h3>
+                    <p class="text-gray-700">La región acelera las inversiones en transmisión para integrar una creciente ola de proyectos renovables y de almacenamiento. La demanda de centros de datos y minería redefine la planificación a largo plazo. Chile y Brasil lideran en innovación y escala, mientras Argentina y Colombia navegan importantes reformas regulatorias.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                     <h3 class="text-xl font-semibold mb-3 text-teal-800">Centroamérica, Caribe y Otros</h3>
+                     <p class="text-gray-700">El foco está puesto en asegurar la capacidad para una demanda en alza y modernizar las redes. México enfrenta el desafío de atraer capital privado para su infraestructura. Los proyectos de interconexión regional ganan impulso como solución para la seguridad y resiliencia del suministro, mientras países como Costa Rica avanzan en la electrificación del transporte.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">Países más Mencionados</h3>
+                    <div class="chart-container">
+                        <canvas id="countriesChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">Tecnologías Destacadas</h3>
+                    <div class="chart-container">
+                        <canvas id="technologiesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="country-analysis" class="mb-12 pt-16 -mt-16">
+            <h2 class="text-3xl font-bold text-center text-blue-900 mb-8">Retos y Oportunidades por País</h2>
+             <p class="text-lg text-gray-600 max-w-3xl mx-auto text-center mb-8">Seleccione un país para explorar en profundidad las noticias, alertas y oportunidades más relevantes. Este panel le permite acceder a un resumen de la situación actual, los proyectos en marcha y los desafíos regulatorios y ambientales.</p>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="mb-6">
+                    <label for="countrySelector" class="block mb-2 text-sm font-medium text-gray-900">Seleccione un país:</label>
+                    <select id="countrySelector" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </select>
+                </div>
+                <div id="country-details">
+                </div>
+            </div>
+        </section>
+
+        <section id="tech-trends" class="mb-12 pt-16 -mt-16">
+            <h2 class="text-3xl font-bold text-center text-blue-900 mb-8">Pulso de la Expansión y Negocios</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto text-center mb-8">Visualización de las principales áreas de inversión y los modelos de negocio emergentes. El incremento de la generación renovable y la necesidad de modernizar la transmisión son las tendencias dominantes, reflejando el camino hacia una matriz más limpia y resiliente.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">Señales de Expansión del Sistema</h3>
+                     <div class="chart-container">
+                         <canvas id="expansionChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">Modelos de Negocio en Foco</h3>
+                    <div class="chart-container">
+                        <canvas id="businessModelChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold text-center text-blue-900 mb-8">Alertas Regulatorias y Ambientales</h2>
+             <p class="text-lg text-gray-600 max-w-3xl mx-auto text-center mb-8">Un vistazo a los principales movimientos normativos que impactan al sector. Desde reformas estructurales de mercado hasta nuevas exigencias ambientales, esta sección resume los cambios que los actores del sector deben monitorear.</p>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div>
+                        <h4 class="text-xl font-semibold mb-3 text-blue-800">Alertas Regulatorias</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                             <li><b>Brasil y Colombia:</b> Lideran la agenda con discusiones sobre reformas estructurales de sus mercados eléctricos, buscando mayor eficiencia y sostenibilidad a largo plazo.</li>
+                             <li><b>Chile:</b> Avanza en la creación de un marco normativo específico para el hidrógeno verde, con el objetivo de posicionarse como líder global.</li>
+                             <li><b>México y Argentina:</b> Enfrentan la necesidad de definir reglas claras para atraer inversión privada, especialmente en infraestructura de transmisión y nuevas tecnologías.</li>
+                             <li><b>Perú:</b> Continúa la revisión de su política energética nacional, señalando posibles ajustes estratégicos en el futuro cercano.</li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h4 class="text-xl font-semibold mb-3 text-teal-800">Alertas Normativas Ambientales</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                             <li><b>Mayor Escrutinio:</b> Decisiones en Ecuador (suspensión de licencia) y Brasil (acción de fiscalía contra proyectos de litio) indican un endurecimiento en la aplicación de la normativa ambiental.</li>
+                             <li><b>Nuevas Regulaciones:</b> México se encuentra en proceso de revisar las normas aplicables a la minería, lo que podría impactar los requerimientos para proyectos energéticos vinculados.</li>
+                             <li><b>Permisos como Desafío:</b> La obtención de permisos ambientales se consolida como una de las etapas más críticas y desafiantes para el desarrollo de nuevos proyectos de infraestructura en toda la región.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 Informe Interactivo del Sector Eléctrico.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const data = {
+                countries: [
+                    { name: 'Brasil', mentions: 48 },
+                    { name: 'Chile', mentions: 36 },
+                    { name: 'Colombia', mentions: 19 },
+                    { name: 'México', mentions: 18 },
+                    { name: 'Argentina', mentions: 17 },
+                    { name: 'Perú', mentions: 16 },
+                    { name: 'Panamá', mentions: 9 },
+                    { name: 'Paraguay', mentions: 8 },
+                    { name: 'Ecuador', mentions: 7 },
+                    { name: 'Honduras', mentions: 6 },
+                    { name: 'Costa Rica', mentions: 4 },
+                    { name: 'Rep. Dominicana', mentions: 4 },
+                    { name: 'Guatemala', mentions: 4 },
+                    { name: 'El Salvador', mentions: 2 },
+                    { name: 'Uruguay', mentions: 2 },
+                    { name: 'Puerto Rico', mentions: 2 },
+                    { name: 'Bolivia', mentions: 1 },
+                    { name: 'Guyana', mentions: 1 }
+                ],
+                technologies: [
+                    { name: 'Solar', mentions: 90 },
+                    { name: 'Transmisión', mentions: 62 },
+                    { name: 'Almacenamiento', mentions: 54 },
+                    { name: 'Eólica', mentions: 40 },
+                    { name: 'Hidroeléctrica', mentions: 32 },
+                    { name: 'Gen. Distribuida', mentions: 26 },
+                    { name: 'H2 Verde', mentions: 15 },
+                ],
+                expansion: [
+                    { label: 'Gen. Renovable', value: 77 },
+                    { label: 'Inv. Transmisión', value: 51 },
+                    { label: 'Almacenamiento', value: 22 },
+                    { label: 'Modern. Distribución', value: 14 },
+                    { label: 'Interconexión', value: 13 },
+                    { label: 'Mov. Eléctrica', value: 9 },
+                ],
+                businessModels: [
+                    { label: 'Infra. Transmisión', value: 31 },
+                    { label: 'Autoconsumo/GD', value: 12 },
+                    { label: 'PPA', value: 10 },
+                    { label: 'Infra. Distribución', value: 8 },
+                    { label: 'Mercado a Término', value: 6 },
+                    { label: 'Storage as a Service', value: 4 },
+                ],
+                countryDetails: {
+                    'Brasil': {
+                        summary: `
+                            <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                            <p class="text-gray-700 mb-3">Brasil enfrenta el doble desafío de gestionar un superávit de energía renovable que causa congestión en la red, mientras avanza en una ambiciosa reforma eléctrica. Las inversiones en transmisión son masivas y urgentes. El país se posiciona como un hub para centros de datos y explora el hidrógeno verde.</p>
+                            <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                             <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Inversiones en transmisión para aliviar el 'curtailment'.</li>
+                                <li>Desarrollo de soluciones de almacenamiento a gran escala.</li>
+                                <li>Crecimiento de la demanda por nuevos centros de datos.</li>
+                            </ul>
+                            <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                             <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Congestión de la red y pérdidas por 'curtailment'.</li>
+                                <li>Incertidumbre regulatoria en la renovación de concesiones de distribución.</li>
+                                <li>Aumentar el escrutinio ambiental en proyectos minero-energéticos.</li>
+                            </ul>
+                        `,
+                    },
+                     'Chile': {
+                        summary: `
+                            <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                            <p class="text-gray-700 mb-3">Chile se consolida como líder regional en la transición energética, con un fuerte impulso político y privado hacia el hidrógeno verde y el almacenamiento con baterías a gran escala. El debate sectorial se centra en la necesidad de modernizar la transmisión y garantizar precios competitivos.</p>
+                            <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                             <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Liderazgo en la cadena de valor del hidrógeno verde.</li>
+                                <li>Mercado masivo para proyectos de almacenamiento BESS.</li>
+                                <li>Demanda creciente de energía limpia para la minería (cobre y litio).</li>
+                            </ul>
+                            <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                             <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Falta de infraestructura de transmisión robusta para evacuar energía renovable.</li>
+                                <li>Altos costos de la energía para el consumidor final.</li>
+                                <li>Complejidad en la obtención de permisos para nuevos proyectos de infraestructura.</li>
+                            </ul>
+                        `,
+                    },
+                    'Colombia': {
+                        summary: `
+                            <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                            <p class="text-gray-700 mb-3">El país atraviesa un período de intensa actividad regulatoria, con planes para reestructurar el mercado eléctrico de largo plazo y nuevas reglas para fomentar el almacenamiento. La seguridad del suministro y la asequibilidad de las tarifas son los temas centrales del debate político y sectorial.</p>
+                            <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                             <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Nuevas subastas de capacidad para asegurar el suministro.</li>
+                                <li>Impulso a proyectos de almacenamiento con nuevas reglas de juego.</li>
+                                <li>Potencial para ser un exportador de energía a través de la interconexión con Panamá.</li>
+                            </ul>
+                            <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                             <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Incertidumbre generada por la discusión de la reforma del mercado.</li>
+                                <li>Riesgos de suministro a mediano plazo si no se concretan nuevas inversiones.</li>
+                                <li>Obstáculos legales para el desarrollo de la energía eólica offshore.</li>
+                            </ul>
+                        `,
+                    },
+                    'México': {
+                        summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">México enfrenta el desafío crucial de expandir su infraestructura de transmisión para satisfacer una demanda creciente, impulsada por el nearshoring y los centros de datos. El gobierno busca atraer inversión privada para CFE, mientras el sector solar espera la eliminación de obstáculos políticos para desplegar su potencial.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Participación privada en la expansión de la red de transmisión.</li>
+                               <li>Demanda masiva de energía por nuevos polos industriales y de datos.</li>
+                               <li>Vasto potencial solar y geotérmico aún por desarrollar.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Recortes presupuestarios que limitan la inversión pública en energía.</li>
+                               <li>Necesidad de un marco regulatorio claro y estable para atraer capital privado.</li>
+                               <li>Resolver obstáculos políticos que frenan el crecimiento de las renovables.</li>
+                           </ul>
+                       `,
+                   },
+                   'Argentina': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Argentina avanza en una reforma pro-mercado de su sector eléctrico. La exitosa subasta de almacenamiento y las oportunidades en el mercado a término (MATER) señalan un fuerte interés inversor. El desarrollo del litio y el gasoducto de Vaca Muerta son claves para el futuro energético.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Pionero en el mercado de almacenamiento de energía en la región.</li>
+                               <li>Expansión del mercado a término para energías renovables.</li>
+                               <li>Potencial de exportación de energía y desarrollo de infraestructura asociada a Vaca Muerta.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Mantener la estabilidad regulatoria para concretar las inversiones.</li>
+                               <li>Gestionar la transición del sector en un contexto macroeconómico complejo.</li>
+                               <li>Asegurar la capacidad firme para cubrir los picos de demanda.</li>
+                           </ul>
+                       `,
+                   },
+                   'Perú': {
+                        summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Perú centra sus esfuerzos en la expansión y fortalecimiento de su sistema de transmisión, con un portafolio de proyectos de casi US$1,000 millones. La electrificación rural es otra prioridad clave del gobierno para cerrar la brecha de acceso a la energía en comunidades aisladas.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Amplio portafolio de licitaciones en transmisión eléctrica.</li>
+                               <li>Desarrollo de proyectos renovables para diversificar la matriz.</li>
+                               <li>Programas de electrificación rural con financiamiento público.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Ejecutar eficientemente los proyectos de infraestructura planificados.</li>
+                               <li>Actualizar el marco de política energética para reflejar las nuevas tendencias tecnológicas.</li>
+                               <li>Asegurar la viabilidad social y ambiental de los nuevos proyectos de transmisión.</li>
+                           </ul>
+                       `,
+                   },
+                    'Panamá': {
+                        summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">El país impulsa la interconexión con Colombia y planifica la expansión de su red eléctrica para atender la demanda de grandes proyectos como la mina Cobre Panamá. La reforma del sector es un tema pendiente y clave para su desarrollo futuro.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Proyectos de interconexión regional.</li>
+                               <li>Expansión de la red para cubrir nueva demanda minera.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Avanzar en una reforma integral del sector eléctrico.</li>
+                               <li>Garantizar la seguridad del suministro ante el aumento de la demanda.</li>
+                           </ul>
+                       `,
+                   },
+                   'Paraguay': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Paraguay está en el centro de una revolución de demanda impulsada por la llegada de masivos centros de datos para IA. La estatal ANDE cuenta con un presupuesto histórico para fortalecer todo el sistema eléctrico y prepararse para este nuevo escenario.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Inversiones en infraestructura para atender a centros de datos.</li>
+                               <li>Modernización y digitalización de la red eléctrica nacional.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Adecuar el marco legal para atraer y gestionar la inversión privada.</li>
+                               <li>Ejecutar el ambicioso plan de fortalecimiento del sistema eléctrico.</li>
+                           </ul>
+                       `,
+                   },
+                   'Ecuador': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Los esfuerzos en Ecuador se centran en la modernización de su infraestructura existente, incluyendo la repotenciación de centrales térmicas y la digitalización de subestaciones. La electrificación rural y el autoabastecimiento industrial son otras áreas de interés.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Modernización de subestaciones y redes de distribución.</li>
+                               <li>Proyectos de electrificación para comunidades aisladas.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Gestionar el impacto ambiental y social de grandes proyectos mineros.</li>
+                               <li>Asegurar el financiamiento para el refuerzo integral de la red eléctrica.</li>
+                           </ul>
+                       `,
+                   },
+                   'Honduras': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Honduras avanza en la modernización de su principal activo de generación, la hidroeléctrica El Cajón, y busca expandir su capacidad solar. La ejecución de un presupuesto de inversión de más de US$1,000 millones es clave para el futuro del sector.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Contratos para la modernización tecnológica de plantas hidroeléctricas.</li>
+                               <li>Nuevos proyectos solares para diversificar la matriz.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Ejecutar de manera eficiente el ambicioso plan de inversiones de la ENEE.</li>
+                               <li>Asegurar el financiamiento para nuevos proyectos estratégicos.</li>
+                           </ul>
+                       `,
+                   },
+                   'Costa Rica': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">El país consolida su liderazgo en sostenibilidad con la incorporación de más autobuses eléctricos y la licitación de nueva capacidad solar y eólica. La gestión del crecimiento de la demanda y la propuesta de rebajas tarifarias son temas centrales.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Expansión del mercado de movilidad eléctrica e infraestructura de carga.</li>
+                               <li>Licitaciones para incorporar nuevas plantas solares y eólicas.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Mantener la estabilidad de la red con una alta penetración de renovables.</li>
+                               <li>Planificar la expansión para satisfacer el crecimiento de la demanda futura.</li>
+                           </ul>
+                       `,
+                   },
+                   'República Dominicana': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">La principal preocupación es satisfacer una demanda eléctrica que rompe récords. El gobierno está flexibilizando las reglas de licitación para atraer más inversiones en generación, especialmente solar y eólica, y avanza en la interconexión con Puerto Rico.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Licitación por 600 MW de energía renovable.</li>
+                               <li>Desarrollo de infraestructura para la interconexión caribeña.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Fortalecer la red de transmisión y distribución para evitar sobrecargas.</li>
+                               <li>Incorporar nueva capacidad de generación a un ritmo acelerado.</li>
+                           </ul>
+                       `,
+                   },
+                   'Guatemala': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">El sector está centrado en la licitación PEG-5, un proceso de gran volumen que definirá la matriz de generación para la próxima década. Paralelamente, se ejecutan programas de electrificación rural para ampliar la cobertura.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Participación en la licitación PEG-5 para nueva generación.</li>
+                               <li>Proyectos de transmisión y distribución asociados a la electrificación rural.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Alinear los objetivos de la política energética con las señales del mercado en la licitación.</li>
+                               <li>Garantizar la transparencia y competitividad del proceso.</li>
+                           </ul>
+                       `,
+                   },
+                   'El Salvador': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">El Salvador impulsa fuertemente la energía geotérmica con una nueva ley y el apoyo del Banco Mundial para un proyecto clave. El objetivo es diversificar su matriz y reducir la dependencia de la hidroelectricidad.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Desarrollo y inversión en la cadena de valor de la geotermia.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Diversificar la matriz energética con otras fuentes renovables además de la geotermia.</li>
+                           </ul>
+                       `,
+                   },
+                   'Uruguay': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Con una matriz eléctrica casi 100% renovable, Uruguay se enfoca en la siguiente fase de la transición: el desarrollo de hidrógeno verde y e-combustibles para descarbonizar sectores como el transporte pesado.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Proyectos pioneros en la producción de hidrógeno verde y e-gasolina.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Definir el marco de política energética a largo plazo (horizonte 2050).</li>
+                           </ul>
+                       `,
+                   },
+                   'Puerto Rico': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">La prioridad es mejorar la resiliencia y fiabilidad de su red eléctrica. El proyecto de interconexión submarina con República Dominicana es una pieza clave en esta estrategia para fortalecer la red troncal de la isla.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Desarrollo de infraestructura de transmisión submarina y tecnologías asociadas.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Asegurar el financiamiento y la viabilidad técnica de la interconexión.</li>
+                           </ul>
+                       `,
+                   },
+                   'Bolivia': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Bolivia está enfocado en finalizar proyectos hidroeléctricos estratégicos para cubrir una alta demanda interna. Además, explora activamente la posibilidad de exportar excedentes de energía a través de la interconexión con Brasil.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Potencial de exportación de electricidad a mercados vecinos.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Satisfacer el crecimiento de la demanda eléctrica nacional.</li>
+                           </ul>
+                       `,
+                   },
+                   'Guyana': {
+                       summary: `
+                           <h4 class="text-lg font-semibold mb-2 text-gray-800">Foco Principal:</h4>
+                           <p class="text-gray-700 mb-3">Impulsado por su auge petrolero, Guyana ha revelado ambiciosos planes para una modernización completa de su infraestructura eléctrica, abarcando generación, transmisión y distribución.</p>
+                           <h4 class="text-lg font-semibold mb-2 text-green-700">Oportunidades:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Renovación y construcción de toda la infraestructura eléctrica del país.</li>
+                           </ul>
+                           <h4 class="text-lg font-semibold mt-3 mb-2 text-red-700">Retos:</h4>
+                           <ul class="list-disc list-inside space-y-1 text-gray-700">
+                               <li>Ejecutar un plan de inversión a gran escala de manera eficiente y transparente.</li>
+                           </ul>
+                       `,
+                   }
+                }
+            };
+            
+            const createChart = (ctx, type, data, options) => new Chart(ctx, { type, data, options });
+
+            const countriesChartCtx = document.getElementById('countriesChart').getContext('2d');
+            createChart(countriesChartCtx, 'bar', {
+                labels: data.countries.map(c => c.name),
+                datasets: [{
+                    label: 'Menciones',
+                    data: data.countries.map(c => c.mentions),
+                    backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                }]
+            }, {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    x: { 
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Menciones'
+                        }
+                    } 
+                }
+            });
+
+            const technologiesChartCtx = document.getElementById('technologiesChart').getContext('2d');
+            createChart(technologiesChartCtx, 'bar', {
+                labels: data.technologies.map(t => t.name),
+                datasets: [{
+                    label: 'Menciones',
+                    data: data.technologies.map(t => t.mentions),
+                    backgroundColor: 'rgba(2, 132, 199, 0.8)',
+                }]
+            }, {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { 
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Menciones'
+                        }
+                    } 
+                }
+            });
+
+            const expansionChartCtx = document.getElementById('expansionChart').getContext('2d');
+            createChart(expansionChartCtx, 'doughnut', {
+                labels: data.expansion.map(e => e.label),
+                datasets: [{
+                    data: data.expansion.map(e => e.value),
+                    backgroundColor: ['#1d4ed8', '#1e40af', '#1e3a8a', '#172554', '#2563eb', '#3b82f6']
+                }]
+            }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels:{boxWidth:12} } } });
+            
+            const businessModelChartCtx = document.getElementById('businessModelChart').getContext('2d');
+            createChart(businessModelChartCtx, 'bar', {
+                labels: data.businessModels.map(b => b.label),
+                datasets: [{
+                    label: 'Menciones',
+                    data: data.businessModels.map(b => b.value),
+                    backgroundColor: 'rgba(79, 70, 229, 0.8)',
+                }]
+            }, {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    x: { 
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Menciones'
+                        }
+                    } 
+                }
+            });
+
+            const countrySelector = document.getElementById('countrySelector');
+            const countryDetailsContainer = document.getElementById('country-details');
+            
+            const selectableCountries = data.countries.map(c => c.name.replace('Rep. Dominicana', 'República Dominicana'));
+            
+            selectableCountries.forEach(countryName => {
+                const option = document.createElement('option');
+                option.value = countryName;
+                option.textContent = countryName;
+                countrySelector.appendChild(option);
+            });
+            
+            function updateCountryDetails(countryName) {
+                const details = data.countryDetails[countryName];
+                if (details) {
+                    countryDetailsContainer.innerHTML = `
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                            ${details.summary}
+                        </div>
+                    `;
+                } else {
+                     countryDetailsContainer.innerHTML = `<p class="p-4 text-gray-500">No hay un resumen detallado disponible para este país.</p>`;
+                }
+            }
+
+            countrySelector.addEventListener('change', (e) => {
+                updateCountryDetails(e.target.value);
+            });
+            
+            updateCountryDetails(selectableCountries[0]);
+            
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', function() {
+                const sectionId = this.value;
+                document.querySelector(sectionId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
